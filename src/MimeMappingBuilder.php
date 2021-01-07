@@ -1,6 +1,15 @@
-<?php
+<?php declare(strict_types=1);
+/*******************************************************************************
+ * Name: App -> Account
+ * Version: 1.0.0
+ * Author: Przemyslaw Ankowski (przemyslaw.ankowski@gmail.com)
+ * Original source code: Ralph Khattar (https://github.com/ralouphie/mimey)
+ ******************************************************************************/
 
+
+// Default namespace
 namespace Mimey;
+
 
 /**
  * Class for converting MIME types to file extensions and vice versa.
@@ -8,49 +17,47 @@ namespace Mimey;
 class MimeMappingBuilder
 {
 	/** @var array The mapping array. */
-	protected $mapping;
+	protected array $mapping;
 
-	/**
-	 * Create a new mapping builder.
-	 *
-	 * @param array $mapping An associative array containing two entries. See `MimeTypes` constructor for details.
-	 */
-	private function __construct($mapping)
-	{
+
+    /**
+     * Create a new mapping builder.
+     *
+     * @param array $mapping An associative array containing two entries. See `MimeTypes` constructor for details.
+     */
+	private function __construct(array $mapping) {
 		$this->mapping = $mapping;
 	}
 
-	/**
-	 * Add a conversion.
-	 *
-	 * @param string $mime The MIME type.
-	 * @param string $extension The extension.
-	 * @param bool   $prepend_extension Whether this should be the preferred conversion for MIME type to extension.
-	 * @param bool   $prepend_mime Whether this should be the preferred conversion for extension to MIME type.
-	 */
-	public function add($mime, $extension, $prepend_extension = true, $prepend_mime = true)
-	{
-		$existing_extensions = empty($this->mapping['extensions'][$mime]) ? array() : $this->mapping['extensions'][$mime];
-		$existing_mimes = empty($this->mapping['mimes'][$extension]) ? array() : $this->mapping['mimes'][$extension];
-		if ($prepend_extension) {
-			array_unshift($existing_extensions, $extension);
+    /**
+     * Add a conversion.
+     *
+     * @param string $mime The MIME type.
+     * @param string $extension The extension.
+     * @param bool $prependExtension Whether this should be the preferred conversion for MIME type to extension.
+     * @param bool $prependMime Whether this should be the preferred conversion for extension to MIME type.
+     */
+	public function add(string $mime, string $extension, bool $prependExtension = true, bool $prependMime = true): void {
+		$existing_extensions = empty($this->mapping["extensions"][$mime]) ? [] : $this->mapping["extensions"][$mime];
+		$existing_mimes = empty($this->mapping["mimes"][$extension]) ? [] : $this->mapping["mimes"][$extension];
+		if ($prependExtension) {
+			\array_unshift($existing_extensions, $extension);
 		} else {
 			$existing_extensions[] = $extension;
 		}
-		if ($prepend_mime) {
-			array_unshift($existing_mimes, $mime);
+		if ($prependMime) {
+			\array_unshift($existing_mimes, $mime);
 		} else {
 			$existing_mimes[] = $mime;
 		}
-		$this->mapping['extensions'][$mime] = array_unique($existing_extensions);
-		$this->mapping['mimes'][$extension] = array_unique($existing_mimes);
+		$this->mapping["extensions"][$mime] = \array_unique($existing_extensions);
+		$this->mapping["mimes"][$extension] = \array_unique($existing_mimes);
 	}
 
 	/**
 	 * @return array The mapping.
 	 */
-	public function getMapping()
-	{
+	public function getMapping(): array {
 		return $this->mapping;
 	}
 
@@ -59,10 +66,9 @@ class MimeMappingBuilder
 	 *
 	 * @return string The compiled PHP code to save to a file.
 	 */
-	public function compile()
-	{
+	public function compile(): string {
 		$mapping = $this->getMapping();
-		$mapping_export = var_export($mapping, true);
+		$mapping_export = \var_export($mapping, true);
 		return "<?php return $mapping_export;";
 	}
 
@@ -75,9 +81,8 @@ class MimeMappingBuilder
 	 *
 	 * @return int|bool The number of bytes that were written to the file, or false on failure.
 	 */
-	public function save($file, $flags = null, $context = null)
-	{
-		return file_put_contents($file, $this->compile(), $flags, $context);
+	public function save(string $file, int $flags = null, mixed $context = null): int|bool {
+		return \file_put_contents($file, $this->compile(), $flags, $context);
 	}
 
 	/**
@@ -85,9 +90,8 @@ class MimeMappingBuilder
 	 *
 	 * @return MimeMappingBuilder A mapping builder with built-in types loaded.
 	 */
-	public static function create()
-	{
-		return self::load(dirname(__DIR__) . '/mime.types.php');
+	public static function create(): MimeMappingBuilder {
+		return self::load(\dirname(__DIR__) . "/mime.types.php");
 	}
 
 	/**
@@ -97,8 +101,7 @@ class MimeMappingBuilder
 	 *
 	 * @return MimeMappingBuilder A mapping builder with types loaded from a file.
 	 */
-	public static function load($file)
-	{
+	public static function load(string $file): MimeMappingBuilder {
 		return new self(require($file));
 	}
 
@@ -107,8 +110,7 @@ class MimeMappingBuilder
 	 *
 	 * @return MimeMappingBuilder A mapping builder with no types defined.
 	 */
-	public static function blank()
-	{
-		return new self(array('mimes' => array(), 'extensions' => array()));
+	public static function blank(): MimeMappingBuilder {
+		return new self(["mimes" => [], "extensions" => []]);
 	}
 }

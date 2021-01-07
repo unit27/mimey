@@ -2,15 +2,7 @@ Mimey
 =====
 
 PHP package for converting file extensions to MIME types and vice versa.
-
-[![Build Status](https://travis-ci.org/ralouphie/mimey.svg?branch=master)](https://travis-ci.org/ralouphie/mimey)
-[![Coverage Status](https://coveralls.io/repos/ralouphie/mimey/badge.svg?branch=master&service=github)](https://coveralls.io/github/ralouphie/mimey?branch=master)
-[![Code Climate](https://codeclimate.com/github/ralouphie/mimey/badges/gpa.svg)](https://codeclimate.com/github/ralouphie/mimey)
-[![Latest Stable Version](https://img.shields.io/packagist/v/ralouphie/mimey.svg)](https://packagist.org/packages/ralouphie/mimey)
-[![Downloads per Month](https://img.shields.io/packagist/dm/ralouphie/mimey.svg)](https://packagist.org/packages/ralouphie/mimey)
-[![License](https://img.shields.io/packagist/l/ralouphie/mimey.svg)](https://packagist.org/packages/ralouphie/mimey)
-
-This package uses [httpd][]'s [mime.types][] to generate a mapping of file extension to MIME type and the other way around.
+This package uses [httpd][]"s [mime.types][] to generate a mapping of file extension to MIME type and the other way around.
 
 The `mime.types` file is parsed by `bin/generate.php` and converted into an optimized PHP array in `mime.types.php`
 which is then wrapped by helper class `\Mimey\MimeTypes`.
@@ -24,26 +16,26 @@ which is then wrapped by helper class `\Mimey\MimeTypes`.
 $mimes = new \Mimey\MimeTypes;
 
 // Convert extension to MIME type:
-$mimes->getMimeType('json'); // application/json
+$mimes->getMimeType("json"); // application/json
 
 // Convert MIME type to extension:
-$mimes->getExtension('application/json'); // json
+$mimes->getExtension("application/json"); // json
 ```
 
 ### Getting All
 
-It's rare, but some extensions have multiple MIME types:
+It"s rare, but some extensions have multiple MIME types:
 
 ```php
 // Get all MIME types for an extension:
-$mimes->getAllMimeTypes('wmz'); // array('application/x-ms-wmz', 'application/x-msmetafile')
+$mimes->getAllMimeTypes("wmz"); // array("application/x-ms-wmz", "application/x-msmetafile")
 ```
 
 However, there are many MIME types that have multiple extensions:
 
 ```php
 // Get all extensions for a MIME type:
-$mimes->getAllExtensions('image/jpeg'); // array('jpeg', 'jpg', 'jpe')
+$mimes->getAllExtensions("image/jpeg"); // array("jpeg", "jpg", "jpe")
 ```
 
 ### Custom Conversions
@@ -57,21 +49,21 @@ There is a `MimeMappingBuilder` that can help with this:
 $builder = \Mimey\MimeMappingBuilder::create();
 
 // Add a conversion. This conversion will take precedence over existing ones.
-$builder->add('custom/mime-type', 'myextension');
+$builder->add("custom/mime-type", "myextension");
 
 $mimes = new \Mimey\MimeTypes($builder->getMapping());
-$mimes->getMimeType('myextension'); // custom/mime-type
-$mimes->getExtension('custom/mime-type'); // myextension
+$mimes->getMimeType("myextension"); // custom/mime-type
+$mimes->getExtension("custom/mime-type"); // myextension
 ```
 
 You can add as many conversions as you would like to the builder:
 
 ```php
-$builder->add('custom/mime-type', 'myextension');
-$builder->add('foo/bar', 'foobar');
-$builder->add('foo/bar', 'fbar');
-$builder->add('baz/qux', 'qux');
-$builder->add('cat/qux', 'qux');
+$builder->add("custom/mime-type", "myextension");
+$builder->add("foo/bar", "foobar");
+$builder->add("foo/bar", "fbar");
+$builder->add("baz/qux", "qux");
+$builder->add("cat/qux", "qux");
 ...
 ```
 
@@ -99,8 +91,8 @@ $mimes = new \Mimey\MimeTypes($builder->getMapping());
 
 ## Install
 
-Compatible with PHP >= 5.4.
+Compatible with PHP >= 8.0.
 
 ```
-composer require ralouphie/mimey
+composer require unit27/mimey
 ```
