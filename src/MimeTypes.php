@@ -16,8 +16,8 @@ namespace Mimey;
  */
 class MimeTypes implements MimeTypesInterface
 {
-	/** @var array The cached built-in mapping array. */
-	private static array $builtIn;
+	/** @var array|null The cached built-in mapping array. */
+	private static ?array $builtIn = null;
 
 	/** @var array The mapping array. */
 	protected array $mapping;
