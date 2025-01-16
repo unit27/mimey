@@ -28,7 +28,7 @@ class MimeTypes implements MimeTypesInterface
 	 *
 	 * If no mappings are defined, they will default to the ones included with this package.
 	 *
-	 * @param array $mapping An associative array containing two entries.
+	 * @param array|null $mapping An associative array containing two entries.
 	 * Entry "mimes" being an associative array of extension to array of MIME types.
 	 * Entry "extensions" being an associative array of MIME type to array of extensions.
 	 * Example:
@@ -47,7 +47,7 @@ class MimeTypes implements MimeTypesInterface
 	 * )
 	 * </code>
 	 */
-	public function __construct(array $mapping = null) {
+	public function __construct(?array $mapping = null) {
 		if ($mapping === null) {
 			$this->mapping = self::getBuiltIn();
 		} else {
