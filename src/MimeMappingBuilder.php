@@ -76,12 +76,12 @@ class MimeMappingBuilder
 	 * Save the current mapping to a file.
 	 *
 	 * @param string   $file    The file to save to.
-	 * @param int      $flags   Flags for `file_put_contents`.
+	 * @param int|null $flags   Flags for `file_put_contents`.
 	 * @param resource $context Context for `file_put_contents`.
 	 *
 	 * @return int|bool The number of bytes that were written to the file, or false on failure.
 	 */
-	public function save(string $file, int $flags = null, mixed $context = null): int|bool {
+	public function save(string $file, ?int $flags = null, mixed $context = null): int|bool {
 		return \file_put_contents($file, $this->compile(), $flags, $context);
 	}
 
